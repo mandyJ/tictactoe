@@ -10,7 +10,8 @@ public class Main {
         PrintStream printStream = System.out;
         Board board = new Board(printStream);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        TicTacToe tictactoe = new TicTacToe(board, printStream, bufferedReader);
+        MoveGetter moveGetter = new MoveGetter(board, printStream,bufferedReader);
+        TicTacToe tictactoe = new TicTacToe(board, moveGetter,printStream);
 
         tictactoe.start();
 

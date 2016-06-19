@@ -1,5 +1,4 @@
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -37,18 +36,6 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldDrawXonPlayerTwosLocationAfterSpacesAreUpdated(){
-        board.updateP1(1);
-        board.drawBoard();
-
-        board.updateP1(5);
-        board.drawBoard();
-
-        verify(printStream).println(contains("X|2|3\n-----\n4|X|6\n-----\n7|8|9"));
-
-    }
-
-    @Test
     public void shouldDrawOonPlayerTwosLocationAfterSpacesAreUpdated(){
         board.updateP1(1);
         board.drawBoard();
@@ -60,17 +47,14 @@ public class BoardTest {
 
     }
 
-    @Ignore
-    public void shouldNotDrawIfSpaceAlreadyTaken(){
+    @Test
+    public void shouldReturnNotValidSpaceIfSpaceAlreadyTaken(){
         board.updateP1(1);
-        board.drawBoard();
 
-        board.updateP2(1);
-        board.drawBoard();
-
-
+        assertEquals(true, board.isNotValid(1));
 
     }
+
 
 
 

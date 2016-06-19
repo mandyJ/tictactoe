@@ -14,13 +14,27 @@ public class Board {
         printStream.println(spaces[0] +"|"+ spaces[1]+ "|" +spaces[2] +"\n-----\n"+ spaces[3]  +"|"+ spaces[4]  +"|"+ spaces[5]  +"\n-----\n"+ spaces[6]  +"|"+ spaces[7]  +"|"+ spaces[8]);
     }
 
-    public void updateP1(int location) {
-        spaces[location-1] = "X";
+    public void updateP1(int chosenSpace) {
+        spaces[chosenSpace-1] = "X";
 
     }
 
-    public void updateP2(int location) {
-        spaces[location-1] = "o";
+    public void updateP2(int chosenSpace) {
+        spaces[chosenSpace-1] = "o";
+
+    }
+
+    public boolean isNotValid(int chosenSpace) {
+        boolean result = false;
+
+        if (spaces[chosenSpace-1] == "o" || spaces[chosenSpace-1] == "X"){
+            result = true;
+        }
+
+        return result;
+    }
+
+    public void checkHorizontalWin(int player) {
 
     }
 }

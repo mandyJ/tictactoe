@@ -1,4 +1,5 @@
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -12,49 +13,37 @@ public class TicTacToeTest {
     private Board board;
     private TicTacToe tictactoe;
     private PrintStream printStream;
-    private BufferedReader bufferedReader;
+    private MoveGetter moveGetter;
 
     @Before
     public void setUp() throws Exception {
         board = mock(Board.class);
+        moveGetter = mock(MoveGetter.class);
         printStream = mock(PrintStream.class);
-        bufferedReader = mock(BufferedReader.class);
-        tictactoe = new TicTacToe(board, printStream, bufferedReader);
+
+        tictactoe = new TicTacToe(board, moveGetter, printStream);
+
+        when(moveGetter.getMove()).thenReturn(1);
     }
 
     @Test
     public void shouldDrawBoardWhenStart() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
 
         tictactoe.start();
 
-        verify(board, times(3)).drawBoard();
+        verify(board,times(3)).drawBoard();
     }
 
     //'After'.. we aren't testing for order in a lot of these!
     @Test
-    public void shouldPromptForUsersMoveAfterBoardIsDrawn() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
-
-        tictactoe.start();
-        verify(printStream,times(2)).println("Please enter number of a location you would like to play:");
-
-    }
-
-    @Test
-    public void shouldGetUsersMoveAfterPrompting() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
-
+    public void shouldGetUsersMoveAfterBoardIsDrawn() throws IOException {
         tictactoe.start();
 
-        verify(bufferedReader,times(2)).readLine();
-
+        verify(board).updateP1(1);
     }
 
     @Test
     public void shouldRedrawBoardAfterUserSelectsLocation() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
-
         tictactoe.start();
 
         verify(board,times(3)).drawBoard();
@@ -64,13 +53,36 @@ public class TicTacToeTest {
 
     @Test
     public void shouldRepeatAllOfTheAboveForNextPlayer() throws IOException{
-        when(bufferedReader.readLine()).thenReturn("1");
-
         tictactoe.start();
 
         verify(board,times(3)).drawBoard();
         verify(board).updateP1(1);
+
+        verify(board).updateP2(1);
     }
+
+    @Test
+    public void shouldSayGameIsDrawWhenNineValidMovesAreMade() throws IOException {
+
+        tictactoe.start();
+
+        verify(board,times(5)).updateP1(1);
+        verify(board,times(4)).updateP2(1);
+
+        verify(printStream).println("Game is draw");
+
+    }
+
+    @Test
+    public void shouldCheckBoardForHorizontalWinsAfterEveryMoveMade() throws IOException {
+
+        tictactoe.start();
+
+        verify(board,times(5)).checkHorizontalWin(1);
+        verify(board,times(4)).checkHorizontalWin(2);
+
+    }
+
 
 
 
